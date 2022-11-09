@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Age Calculator</title>
+
+    <link rel="stylesheet" href="./css/agecalculator.css" />
+  </head>
+  <body>
+    <div class="home-btn">
+      <a href="/">HOME</a>
+    </div>
+
+    <div class="main">
+      <div class="age-calculator">
+        <h1>Age Calculator</h1>
+
+        <div class="container">
+          <h3 id="output"></h3>
+          <input
+            type="date"
+            name="userBirthday"
+            id="userBirthday"
+            value="2003-12-20"
+          />
+          <button id="generateAgeBtn">Calculate</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const output = document.querySelector("#output");
+      const userBirthday = document.querySelector("#userBirthday");
+      const generateAgeBtn = document.querySelector("#generateAgeBtn");
+
+      const getAge = (userBirthday) => {
+        const convertedBirthday = userBirthday.split("-");
+        const birthdayOfUser = {
+          year: convertedBirthday[0],
+          month: convertedBirthday[1],
+          day: convertedBirthday[2],
+        };
+
+        const date = new Date();
+        const dayToday = date.getDate();
+        const monthToday = date.getMonth() + 1;
+        const yearToday = date.getFullYear();
+
+        if (
+          birthdayOfUser.year > yearToday ||
+          (birthdayOfUser.month > monthToday &&
+            birthdayOfUser.year == yearToday) ||
+          (birthdayOfUser.day > dayToday &&
+            monthToday == birthdayOfUser.month &&
+            birthdayOfUser.year == yearToday) ||
+          (birthdayOfUser.month == monthToday &&
+            birthdayOfUser.day == dayToday &&
+            birthdayOfUser.year == yearToday)
+        ) {
+          return 0;
+        } else {
+          const age = yearToday - birthdayOfUser.year;
+
+          if (
+            birthdayOfUser.month > monthToday ||
+            (birthdayOfUser.day > dayToday &&
+              birthdayOfUser.month == monthToday)
+          ) {
+            return age - 1;
+          }
+          return age;
+        }
+      };
+
+      generateAgeBtn.onclick = () => {
+        const age = getAge(userBirthday.value);
+
+        if (age != 0) {
+          output.textContent = `You are ${age} years old`;
+        } else {
+          output.textContent = `Invalid Date of Birth`;
+        }
+      };
+    </script>
+  </body>
+</html>
